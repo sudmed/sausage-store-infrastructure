@@ -1,1 +1,1 @@
-
+0 3 * * *   find /opt/backup/ -type d -mtime +30 -delete
