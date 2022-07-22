@@ -1,0 +1,12 @@
+# log rotation for task 5.1
+/opt/log/sausage-store.log {
+  hourly
+  rotate 3
+  compress
+  missingok
+  size 10M
+  copytruncate
+  postrotate
+    echo `date +\%Y-\%m-\%d-\%H:\%M` >> /opt/student_rotate.log
+  endscript
+}
