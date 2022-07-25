@@ -9,9 +9,9 @@ terraform {
 }
 
 provider "yandex" {
-  token     = "t1.9euelZqNyY2Jm4yLmZyanZHNlZ6bk-3rnpWajZfNjsiPkpOKnJuVyJSSmp7l9PdVBAdp-e8PcwnE3fT3FTMEafnvD3MJxA.Gm5_34wMdV_syBJUyFd4WLI6LY5KH2RV231DhSlWrHMTAyen77Fy641tqmefBABcxLd3vvuQ022_6E4gcRHpBg"
-  cloud_id  = "b1g3jddf4nv5e9okle7p"
-  folder_id = "b1ggoah947u3kc4j9m7i"
+  token     = var.IAM_token
+  cloud_id  = var.cloud_id
+  folder_id = var.folder_id
   zone      = "ru-central1-a"
 }
 
@@ -36,7 +36,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "${file("./meta.txt")}"
+    user-data          = "${file("./meta.txt")}"
     serial-port-enable = 1
   }
 }
