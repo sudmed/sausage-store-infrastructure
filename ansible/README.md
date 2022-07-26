@@ -53,9 +53,9 @@ PLAY RECAP *********************************************************************
 `cat inventory/hosts`
 ```console
 [backend]
-backend-vm ansible_host=62.84.114.21",
+backend-vm ansible_host=62.84.114.21
 [frontend]
-frontend-vm ansible_host=51.250.81.126",
+frontend-vm ansible_host=51.250.81.126
 ```
 
 ## 4. Run the 'backend' part of ansible playbook
