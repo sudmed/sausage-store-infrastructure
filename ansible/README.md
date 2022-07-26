@@ -1,6 +1,7 @@
 # Task confirmation
 
-## 1. Create 2 VMs
+## 1. Create VMs 
+**(the secret variable was left purposefully)**
 `terraform apply --auto-approve -var="IAM_token=t1.9euelZqeiZeYl42TzpOTlpiZnpWJzO3rnpWajZfNjsiPkpOKnJuVyJSSmp7l8_cdTwFp-e92dwQM_d3z9119fmj573Z3BAz9.nMwWvJaA1t4NGyOk5msuREeZBRnCulj1DszKi0yu86cT263qvKX7Bf23FMyWiG6u2NtNrfF1uxYLHWl9RcOwAw"`
 
 ```console
@@ -31,7 +32,7 @@ vm_ip_addresses = [
 ]
 ```
 
-## 2. Run ansible playbook.yaml
+## 2. Run the 'inventory' part of ansible playbook
 `ansible-playbook playbook.yaml --tags "inventory"`
 ```console
 [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
@@ -48,7 +49,7 @@ PLAY [Deploy frontend] *********************************************************
 PLAY RECAP ************************************************************************************************************************************************************************************localhost                  : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-## 3. Check hosts file
+## 3. Check hosts file for IP addresses
 `cat inventory/hosts`
 ```console
 [backend]
@@ -57,7 +58,7 @@ backend-vm ansible_host=62.84.114.21",
 frontend-vm ansible_host=51.250.81.126",
 ```
 
-## 4. Deploy backend
+## 4. Run the 'backend' part of ansible playbook
 `ansible-playbook playbook.yaml --tags "backend"`
 ```console
 PLAY [Put IP addresses into inventory/hosts] **************************************************************************************************************************************************
@@ -88,7 +89,7 @@ PLAY [Deploy frontend] *********************************************************
 PLAY RECAP ************************************************************************************************************************************************************************************backend-vm                 : ok=11   changed=9    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 ```
 
-## 5. Deploy frontend
+## 5. Run the 'frontend' part of ansible playbook
 `ansible-playbook playbook.yaml --tags "frontend"`
 ```console
 PLAY [Put IP addresses into inventory/hosts] **************************************************************************************************************************************************
@@ -127,7 +128,8 @@ RUNNING HANDLER [frontend : Restart frontend service] **************************
 PLAY RECAP ************************************************************************************************************************************************************************************frontend-vm                : ok=15   changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-## 6. Check if it works
+
+## 6. Check if it works by curl
 `curl -Ik http://51.250.81.126:8080`
 ```console
 HTTP/1.1 200 OK
@@ -141,6 +143,7 @@ Date: Tue, 26 Jul 2022 22:48:50 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 ```
+
 
 ## 7. Open in web-browser
 [http://51.250.81.126:8080](http://51.250.81.126:8080)
