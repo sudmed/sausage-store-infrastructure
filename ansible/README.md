@@ -1,7 +1,7 @@
 # Task confirmation
 
 ## 1. Create VMs 
-**(the secret variable was left purposefully)**  
+**(the secret variable was left purposefully, in wild 'direnv' will help to keep secrets)**  
 `terraform apply --auto-approve -var="IAM_token=t1.9euelZqeiZeYl42TzpOTlpiZnpWJzO3rnpWajZfNjsiPkpOKnJuVyJSSmp7l8_cdTwFp-e92dwQM_d3z9119fmj573Z3BAz9.nMwWvJaA1t4NGyOk5msuREeZBRnCulj1DszKi0yu86cT263qvKX7Bf23FMyWiG6u2NtNrfF1uxYLHWl9RcOwAw"`
 
 ```console
