@@ -1,0 +1,6 @@
+backend_maven_version: 1.0.122729
+backend_service_user: jarservice
+backend_service_group: jarusers
+backend_report_directory: /opt/sausage-store/reports
+backend_lib_directory: /opt/sausage-store/lib
+backend_nexus_url: https://nexus.praktikum-services.ru/repository/sausage-store-pashkov-dmitriy-backend/

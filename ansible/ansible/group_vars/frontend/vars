@@ -1,0 +1,7 @@
+frontend_version: 1.0.120037
+frontend_service_user: front-user
+frontend_service_group: front-user
+frontend_directory: /var/www-data
+frontend_nexus_url: https://nexus.praktikum-services.ru/repository/sausage-store-pashkov-dmitriy-frontend
+nodejs_keyring: /usr/share/keyrings/nodesource.gpg
+nodejs_version: 16

@@ -1,0 +1,16 @@
+[Unit]
+Description=Sausage Store Backend Service
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/jvm/java-16-openjdk-amd64/bin/java -jar {{ backend_lib_directory }}/sausage-store-{{ backend_maven_version }}.jar
+ExecStop=/bin/kill -15 $MAINPID
+User={{ backend_service_user }}
+Restart=always
+Environment="REPORT_PATH={{ backend_report_directory }}"
+StandardOutput=append:{{ log_directory }}/sausage-store-backend.log
+StandardError=append:{{ log_directory }}/sausage-store-backend.log
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
