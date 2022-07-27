@@ -1,0 +1,4 @@
+[backend]
+backend-vm ansible_host=62.84.114.21
+[frontend]
+frontend-vm ansible_host=51.250.81.126

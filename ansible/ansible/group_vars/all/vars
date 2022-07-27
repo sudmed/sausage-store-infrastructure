@@ -1,0 +1,6 @@
+ANSIBLE_HOST_KEY_CHECKING: False
+ansible_connection: ssh
+ansible_user: ansible
+log_directory: /var/log/sausage-store
+nexus_username: "d.pashkov"
+nexus_password: "{{ vault_nexus_password }}"

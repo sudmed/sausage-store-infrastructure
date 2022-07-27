@@ -1,0 +1,73 @@
+---
+# tasks file for backend
+- name: Wait for target connection to become reachable/usable
+  wait_for_connection:
+
+- name: Install openjdk and python
+  apt:
+    name:
+      - openjdk-16-jdk
+      - python3-lxml
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Add backend service group
+  group:
+    name: "{{ backend_service_group }}"
+    state: present
+  become: true
+
+- name: Add backend service user
+  user:
+    name: "{{ backend_service_user }}"
+    group: "{{ backend_service_group }}"
+    create_home: no
+    shell: /sbin/nologin
+    state: present
+  become: true
+
+- name: Create service directory
+  file:
+    path: "{{ backend_lib_directory }}"
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_group }}"
+    state: directory
+  become: true
+
+- name: Create report directory
+  file:
+    path: "{{ backend_report_directory }}"
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_group }}"
+    state: directory
+  become: true
+
+- name: Create log directory
+  file:
+    path: "{{ log_directory }}"
+    state: directory
+  become: true
+
+- name: Download Maven artifact
+  maven_artifact:
+    dest: "{{ backend_lib_directory }}/sausage-store-{{ backend_maven_version }}.jar"
+    repository_url: "{{ backend_nexus_url }}"
+    group_id: "com.yandex.practicum.devops"
+    artifact_id: "sausage-store"
+    version: "{{ backend_maven_version }}"
+    username: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_group }}"
+  notify: Restart backend service
+  become: true
+
+- name: Render the template of Sausage Store Backend Service unit
+  template:
+    src: sausage-store-backend.service.j2
+    dest: /etc/systemd/system/sausage-store-backend.service
+  notify: 
+    - Reread systemd configs
+    - Restart backend service
+  become: true

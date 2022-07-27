@@ -1,0 +1,97 @@
+---
+# tasks file for frontend
+- name: Wait for target connection to become reachable/usable
+  wait_for_connection:
+
+- name: Collect selected facts
+  setup:
+    filter:
+      - 'ansible_distribution_release'
+
+- name: Install GPG key for NodeJS
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    id: 9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280
+    keyring: "{{ nodejs_keyring }}"
+    state: present
+  become: true
+
+- name: Install NodeJS repository
+  apt_repository:
+    repo: "deb [signed-by={{ nodejs_keyring }}] https://deb.nodesource.com/node_{{ nodejs_version }}.x {{ ansible_distribution_release }} main"
+    update_cache: yes
+    state: present
+  become: true
+
+- name: Install the NodeJS
+  apt:
+    name: nodejs
+    update_cache: yes
+    state: present
+  become: true
+
+- name: Install node.js http-server
+  npm:
+    name: http-server
+    path: /lib/node_modules
+    global: yes
+  become: true
+
+- name: Add frontend group
+  group:
+    name: "{{ frontend_service_group }}"
+    state: present
+  become: true
+
+- name: Add frontend user
+  user:
+    name: "{{ frontend_service_user }}"
+    group: "{{ frontend_service_group }}"
+    create_home: no
+    shell: /sbin/nologin
+    state: present
+  become: true
+
+- name: Create service directory
+  file:
+    path: "{{ frontend_directory }}"
+    owner: "{{ frontend_service_user }}"
+    group: "{{ frontend_service_group }}"
+    mode: "0755"
+    state: directory
+  become: true
+
+- name: Create log directory
+  file:
+    path: "{{ log_directory }}"
+    state: directory
+  become: true
+
+- name: Download frontend from Nexus
+  get_url:
+    url: "{{ frontend_nexus_url }}/{{ frontend_version }}/sausage-store-{{ frontend_version }}.tar.gz"
+    dest: "/home/ansible/sausage-store-{{ frontend_version }}.tar.gz"
+    username: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+  notify: Restart frontend service
+  become: true
+
+- name: Extract tar.gz archive
+  unarchive:
+    src: "/home/ansible/sausage-store-{{ frontend_version }}.tar.gz"
+    dest: "{{ frontend_directory }}"
+    owner: "{{ frontend_service_user }}"
+    group: "{{ frontend_service_group }}"
+    mode: "0744"
+    remote_src: yes
+    extra_opts: [--strip-components=2]
+  become: true
+
+- name: Render the template of Sausage Store Frontend Service unit
+  template:
+    src: sausage-store-frontend.service.j2
+    dest: /etc/systemd/system/sausage-store-frontend.service
+  notify: 
+    - Reread systemd configs
+    - Restart frontend service
+  become: true

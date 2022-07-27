@@ -1,0 +1,13 @@
+---
+# handlers file for backend
+- name: Reread systemd configs
+  systemd:
+    daemon_reload: yes
+  become: true
+
+- name: Restart backend service
+  service:
+    name: sausage-store-backend
+    state: restarted
+    enabled: yes
+  become: true

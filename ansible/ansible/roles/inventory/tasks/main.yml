@@ -1,0 +1,11 @@
+---
+# tasks file for inventory
+- name: Get IP addresses for inventory/hosts file
+  shell:
+    cmd: >
+      terraform output | grep "chapter5-lesson2-dmitriy-pashkov-" | 
+      tr -d '",' | 
+      awk 'NR==1 {print "[backend]\nbackend-vm ansible_host="$4} 
+      NR==2 {print "[frontend]\nfrontend-vm ansible_host="$4}' 
+      > /mnt/c/Yandex_repo/YandexPracticum.DevOps/Chapter5-lesson3/ansible/inventory/hosts
+    chdir: ../terraform

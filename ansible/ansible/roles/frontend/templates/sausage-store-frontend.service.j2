@@ -1,0 +1,15 @@
+[Unit]
+Description=Sausage Store Frontend Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/lib/node_modules/http-server/bin/http-server {{ frontend_directory }} -p 8080 --proxy http://{{ hostvars[ 'backend-vm' ].ansible_host }}:8080
+User={{ frontend_service_user }}
+StandardOutput=append:{{ log_directory }}/sausage-store-frontend.log
+StandardError=append:{{ log_directory }}/sausage-store-frontend.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

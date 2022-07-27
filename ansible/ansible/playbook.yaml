@@ -1,0 +1,27 @@
+---
+- name: Put IP addresses into inventory/hosts
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - inventory
+  tags: 
+    - inventory
+
+- name: Deploy backend
+  hosts: backend
+  gather_facts: false
+  roles:
+    - backend
+  tags: 
+    - backend
+    - deploy
+
+- name: Deploy frontend
+  hosts: frontend
+  gather_facts: false
+  roles:
+    - frontend
+  tags: 
+    - frontend
+    - deploy
