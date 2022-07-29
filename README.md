@@ -12,8 +12,10 @@
 
 
 ### the database query:
-`select COUNT(*) from orders o INNER JOIN order_product op ON o.id = op.order_id INNER JOIN product p ON op.product_id = p.id WHERE p.id = 4;`
+```sql
+select COUNT(*) from orders o INNER JOIN order_product op ON o.id = op.order_id INNER JOIN product p ON op.product_id = p.id WHERE p.id = 4;`
+```
 
 ### Execution time
-**before:**   `Time: 18527.650 ms (00:18.528)`
+**before:**   `Time: 18527.650 ms (00:18.528)`  
 **after:**    `Time: 10987.890 ms (00:10.988)`
