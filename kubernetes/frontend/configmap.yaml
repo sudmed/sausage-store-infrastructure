@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: nginx-conf
 data:
-  nginx-conf: |
+  sausage-store-nginx.conf: |
     server {
 
       listen 8080;
