@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-report
+  labels:
+    app: backend-report
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-report
+  template:
+    metadata:
+      labels:
+        app: backend-report
+    spec:
+      containers:
+        - name: backend-report
+          image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend-report:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: VAULT_URL
+              value: 51.250.67.183
+            - name: VAULT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vault
+                  key: vault_token
+          ports:
+            - name: backend-report
+              containerPort: 8080
+      imagePullSecrets:
+        - name: docker-config-secret
