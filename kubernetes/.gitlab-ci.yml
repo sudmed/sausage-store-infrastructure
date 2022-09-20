@@ -3,6 +3,9 @@ stages:
 
 deploy:
   stage: deploy
+  environment:
+    name: kubernetes
+    url: https://06-d-pashkov.k8s.praktikum-services.tech
   before_script:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
