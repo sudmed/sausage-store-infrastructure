@@ -10,6 +10,7 @@ deploy:
   before_script:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
+    - echo ${kubeconfig}
     - echo ${kubeconfig} | base64 -d > ${KUBECONFIG}
     - kubectl config view
     - kubectl config get-contexts
