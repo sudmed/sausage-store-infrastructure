@@ -17,4 +17,3 @@ deploy:
     - kubectl apply -f kubernetes/backend-report/
     - kubectl apply -f kubernetes/frontend/
     - rm -f ~/.kube/config
-    - ls -la ~/.kube/
