@@ -12,16 +12,9 @@ deploy:
     - echo ${kubeconfig} | base64 -d > ~/.kube/config
     - KUBECONFIG=~/.kube/config
     - export KUBECONFIG
-    - echo "$KUBECONFIG"
-    - kubectl config view
-    - kubectl config get-contexts
-    - kubectl get all
-    - kubectl get no
-    - kubectl get po
-    - kubectl cluster-info
   script:
-#    - kubectl apply -f kubernetes/backend/
-#    - kubectl apply -f kubernetes/backend-report/
-#    - kubectl apply -f kubernetes/frontend/
+    - kubectl apply -f kubernetes/backend/
+    - kubectl apply -f kubernetes/backend-report/
+    - kubectl apply -f kubernetes/frontend/
     - rm -f ~/.kube/config
-    - echo "$KUBECONFIG"
+    - ls -la ~/.kube/
