@@ -9,12 +9,7 @@ deploy:
     url: https://06-d-pashkov.k8s.praktikum-services.tech
   before_script:
     - mkdir -p ~/.kube
-    - chmod 700 ~/.kube
-    - echo ${KUBECONFIG}
-    - echo ${kubeconfig}
     - echo ${kubeconfig} | base64 -d > ~/.kube/config
-#    - chmod 644 ~/.kube/config
-    - cat ~/.kube/config
     - KUBECONFIG=~/.kube/config
     - export KUBECONFIG
     - echo "$KUBECONFIG"
@@ -28,5 +23,5 @@ deploy:
 #    - kubectl apply -f kubernetes/backend/
 #    - kubectl apply -f kubernetes/backend-report/
 #    - kubectl apply -f kubernetes/frontend/
-#    - rm -f ~/.kube/config
+    - rm -f ~/.kube/config
     - echo "$KUBECONFIG"
