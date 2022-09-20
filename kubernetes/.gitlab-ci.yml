@@ -12,10 +12,10 @@ deploy:
     - chmod 700 ~/.kube
     - echo ${KUBECONFIG}
     - echo ${kubeconfig}
-    - echo ${kubeconfig} | base64 -d > ${KUBECONFIG}
-    - echo ${KUBECONFIG}
-    - kubectl config view
-    - kubectl config get-contexts
+    - echo ${kubeconfig} | base64 -d > ~/.kube/config
+    - cat ~/.kube/config
+    - kubectl config view --kubeconfig=~/.kube/config
+    - kubectl config get-contexts --kubeconfig=~/.kube/config
     - chmod 644 ~/.kube/config
   script:
     - kubectl apply -f kubernetes/backend/
