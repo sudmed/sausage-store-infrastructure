@@ -19,11 +19,11 @@ spec:
         app: frontend
     spec:
       affinity:
-        Node affinity:
+        podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: app
+            - labelSelector:
+              matchExpressions:
+              - key: "app"
                 operator: In
                 values:
                 - frontend
