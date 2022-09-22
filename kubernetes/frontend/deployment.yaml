@@ -22,11 +22,11 @@ spec:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
-              matchExpressions:
-              - key: "app"
-                operator: In
-                values:
-                - frontend
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - frontend
       containers:
         - name: frontend
           image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-frontend:latest
