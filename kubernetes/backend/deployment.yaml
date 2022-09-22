@@ -60,7 +60,7 @@ spec:
       kind: Deployment
       name: backend
     updatePolicy:
-      updateMode: "Initial"
+      updateMode: "Auto"
     resourcePolicy:
       containerPolicies:
         - containerName: "*"
