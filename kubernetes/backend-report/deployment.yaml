@@ -49,7 +49,7 @@ spec:
     kind: Deployment
     name: backend-report
   metrics:
-    — type: Resource
+    - type: Resource
       resource:
         name: cpu
         target:
