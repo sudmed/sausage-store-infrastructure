@@ -27,6 +27,7 @@ spec:
                     operator: In
                     values:
                     - frontend
+              topologyKey: "kubernetes.io/hostname"
       containers:
         - name: frontend
           image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-frontend:latest
