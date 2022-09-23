@@ -7,7 +7,7 @@ metadata:
     app: backend
 spec:
   revisionHistoryLimit: 15
-  replicas: 1
+  replicas: 5
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -40,9 +40,9 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 35
+            initialDelaySeconds: 120
             periodSeconds: 30
-            timeoutSeconds: 3
+            timeoutSeconds: 10
             failureThreshold: 6
       imagePullSecrets:
         - name: docker-config-secret
