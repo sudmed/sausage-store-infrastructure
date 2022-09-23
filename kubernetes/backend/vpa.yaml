@@ -9,7 +9,7 @@
       kind: Deployment
       name: backend
     updatePolicy:
-      updateMode: "Auto"
+      updateMode: "Off"
     resourcePolicy:
       containerPolicies:
         - containerName: "*"
