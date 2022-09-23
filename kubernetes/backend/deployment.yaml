@@ -7,7 +7,7 @@ metadata:
     app: backend
 spec:
   revisionHistoryLimit: 15
-  replicas: 1
+  replicas: 2
   # Стратегия развёртывания. Recreate — удалит сначала все старые поды 
   # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять поды порциями  
   strategy:
