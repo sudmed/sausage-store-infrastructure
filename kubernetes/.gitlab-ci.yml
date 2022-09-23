@@ -13,7 +13,5 @@ deploy:
     - KUBECONFIG=~/.kube/config
     - export KUBECONFIG
   script:
-    - kubectl apply -f kubernetes/backend/
-    - kubectl apply -f kubernetes/backend-report/
-    - kubectl apply -f kubernetes/frontend/
+    - kubectl apply -f kubernetes/ --recursive
     - rm -f ~/.kube/config
