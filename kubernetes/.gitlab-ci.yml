@@ -13,5 +13,5 @@ deploy:
     - KUBECONFIG=~/.kube/config
     - export KUBECONFIG
   script:
-    - kubectl apply -f kubernetes/ --recursive
+    - kubectl apply -f kubernetes --recursive
     - rm -f ~/.kube/config
