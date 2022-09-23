@@ -14,8 +14,8 @@
       containerPolicies:
         - containerName: "*"
           minAllowed:
-            cpu: 25m
-            memory: 272Mi
+            cpu: 0m
+            memory: 0Mi
           maxAllowed:
             cpu: 1
             memory: 500Mi
