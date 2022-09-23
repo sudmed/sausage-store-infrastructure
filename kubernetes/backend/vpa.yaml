@@ -9,13 +9,13 @@
       kind: Deployment
       name: backend
     updatePolicy:
-      updateMode: "Off"
+      updateMode: "Auto"
     resourcePolicy:
       containerPolicies:
         - containerName: "*"
           minAllowed:
-            cpu: 0m
-            memory: 0Mi
+            cpu: 25m
+            memory: 272Mi
           maxAllowed:
             cpu: 1
             memory: 500Mi
