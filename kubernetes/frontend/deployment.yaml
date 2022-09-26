@@ -18,16 +18,8 @@ spec:
       labels:
         app: frontend
     spec:
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                    - frontend
-              topologyKey: "kubernetes.io/hostname"
+      nodeSelector:
+        app: frontend
       containers:
         - name: frontend
           image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-frontend:latest
