@@ -9,7 +9,7 @@ spec:
     kind: Deployment
     name: backend
   updatePolicy:
-    updateMode: "Reсreate"
+    updateMode: ReCreate
   resourcePolicy:
     containerPolicies:
       - containerName: "*"
