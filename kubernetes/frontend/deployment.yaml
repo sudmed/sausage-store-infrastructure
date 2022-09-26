@@ -18,8 +18,15 @@ spec:
       labels:
         app: frontend
     spec:
-      nodeSelector:
-        app: frontend
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - frontend
       containers:
         - name: frontend
           image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-frontend:latest
