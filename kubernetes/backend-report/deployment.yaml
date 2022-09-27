@@ -6,6 +6,7 @@ metadata:
   labels:
     app: backend-report
 spec:
+  revisionHistoryLimit: 15
   replicas: 1
   selector:
     matchLabels:
