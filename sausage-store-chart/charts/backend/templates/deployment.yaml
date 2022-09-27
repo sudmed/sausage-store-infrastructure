@@ -14,11 +14,11 @@ metadata:
     env: "{{ .Values.environment }}" 
 spec:
   revisionHistoryLimit: 15
-  replicas: {{ .Values.backend.replicaCount }}
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 1
+      maxUnavailable: 80%
       maxSurge: 20%
   selector:
     matchLabels:
@@ -29,12 +29,12 @@ spec:
         app: backend
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
-          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+        - name: backend
+          image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend:latest
+          imagePullPolicy: IfNotPresent
           env:
-            - name: {{ .Values.backend.env.name }}
-              value: {{ .Values.backend.env.value }}
+            - name: VAULT_URL
+              value: 51.250.67.183
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
