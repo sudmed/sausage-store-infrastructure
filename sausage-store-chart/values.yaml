@@ -1,0 +1,25 @@
+backend:
+  image: 
+    repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend
+    tag: latest
+  env:
+    - name: VAULT_URL
+      value: 51.250.67.183
+  vault:
+    tokenSecretName: vault
+
+backend-report:
+  image: 
+    repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend-report
+    tag: latest
+  env:
+    - name: VAULT_URL
+      value: 51.250.67.183
+  vault:
+    tokenSecretName: vault
+
+frontend:
+  fqdn: 06-d-pashkov.k8s.praktikum-services.tech
+  image:
+    repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-frontend
+    tag: latest
