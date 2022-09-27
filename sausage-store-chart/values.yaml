@@ -1,3 +1,6 @@
+global:
+  environment: prod
+
 backend:
   image: 
     repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend
