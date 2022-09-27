@@ -6,11 +6,13 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 1
-  # Стратегия развёртывания. Recreate — удалит сначала все старые поды 
-  # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять поды порциями  
+  revisionHistoryLimit: 15
+  replicas: 5
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 80%
+      maxSurge: 20%
   selector:
     matchLabels:
       app: backend
@@ -38,7 +40,7 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 100
             periodSeconds: 30
             timeoutSeconds: 10
             failureThreshold: 6
