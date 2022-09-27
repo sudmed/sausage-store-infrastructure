@@ -2,9 +2,11 @@ global:
   environment: prod
 
 backend:
-  image: 
+  replicaCount: 1
+  image:
     repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend
     tag: latest
+    pullPolicy: Always
   env:
     - name: VAULT_URL
       value: 51.250.67.183
