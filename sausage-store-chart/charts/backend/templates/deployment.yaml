@@ -12,4 +12,44 @@ metadata:
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: sausage-store
     env: "{{ .Values.environment }}" 
-
+spec:
+  revisionHistoryLimit: 15
+  replicas: {{ .Values.backend.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 20%
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          env:
+            - name: {{ .Values.backend.env.name }}
+              value: {{ .Values.backend.env.value }}
+            - name: VAULT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vault
+                  key: vault_token
+          ports:
+            - name: backend
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 100
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 6
+      imagePullSecrets:
+        - name: docker-config-secret
