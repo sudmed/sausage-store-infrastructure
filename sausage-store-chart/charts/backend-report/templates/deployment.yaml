@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sausage-backend-report-{{ .Release.Name }}
+  name: backend-report-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: sausage-backend-report
@@ -12,10 +12,10 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     app.kubernetes.io/component: backend-report
     app.kubernetes.io/part-of: sausage-store
-    env: "{{ .Values.environment }}" 
+    env: "{{ .Values.global.environment }}" 
 spec:
-  revisionHistoryLimit: 15
-  replicas: 1
+  revisionHistoryLimit: {{ .Values.global.revisionHistoryLimit }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: backend-report
@@ -26,11 +26,13 @@ spec:
     spec:
       containers:
         - name: backend-report
-          image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend-report:latest
-          imagePullPolicy: IfNotPresent
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           env:
             - name: VAULT_URL
-              value: 51.250.67.183
+            {{- range .Values.env }}
+              value: {{ .value }}
+            {{- end}}
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -39,5 +41,10 @@ spec:
           ports:
             - name: backend-report
               containerPort: 8080
+          resources:
+            requests:
+              cpu: {{ .Values.request.cpu }}
+            limits:
+              cpu: {{ .Values.limits.cpu }}
       imagePullSecrets:
         - name: docker-config-secret

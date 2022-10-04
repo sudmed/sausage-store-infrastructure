@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sausage-frontend-{{ .Release.Name }}
+  name: frontend-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: sausage-frontend
@@ -12,10 +12,10 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     app.kubernetes.io/component: frontend
     app.kubernetes.io/part-of: sausage-store
-    env: "{{ .Values.environment }}"
+    env: "{{ .Values.global.environment }}"
 spec:
-  revisionHistoryLimit: 15
-  replicas: 1
+  revisionHistoryLimit: {{ .Values.global.revisionHistoryLimit }}
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: Recreate
   selector:
@@ -37,8 +37,8 @@ spec:
                 - frontend
       containers:
         - name: frontend
-          image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-frontend:latest
-          imagePullPolicy: Always
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           ports:
             - name: frontend
               containerPort: 8080

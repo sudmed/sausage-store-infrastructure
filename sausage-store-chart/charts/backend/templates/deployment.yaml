@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sausage-backend-{{ .Release.Name }}
+  name: backend-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: sausage-backend
@@ -12,14 +12,14 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: sausage-store
-    env: "{{ .Values.environment }}" 
+    env: "{{ .Values.global.environment }}"
 spec:
-  revisionHistoryLimit: 15
-  replicas: 1
+  revisionHistoryLimit: {{ .Values.global.revisionHistoryLimit }}
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 80%
+      maxUnavailable: 1
       maxSurge: 20%
   selector:
     matchLabels:
@@ -31,11 +31,13 @@ spec:
     spec:
       containers:
         - name: backend
-          image: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend:latest
-          imagePullPolicy: IfNotPresent
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           env:
             - name: VAULT_URL
-              value: 51.250.67.183
+            {{- range .Values.env }}
+              value: {{ .value }}
+            {{- end}}
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -48,9 +50,9 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 100
+            initialDelaySeconds: 30
             periodSeconds: 30
-            timeoutSeconds: 10
+            timeoutSeconds: 3
             failureThreshold: 6
       imagePullSecrets:
         - name: docker-config-secret

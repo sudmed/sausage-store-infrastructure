@@ -4,25 +4,19 @@ kind: Ingress
 metadata:
   name: frontend
 spec:
-  # В кластере может быть несколько Ingress Controllers, мы используем NGINX
   ingressClassName: "nginx"
   tls:
     - secretName: ingress-example-tls
-      hosts:
-        - "06-d-pashkov.k8s.praktikum-services.tech"
+      hosts: 
+        - {{ .Values.ingress.tls.hosts }}
   rules:
-    # Хост определяет правило направления траффика по доменному имени
-  - host: "06-d-pashkov.k8s.praktikum-services.tech"
+  - host: {{ .Values.ingress.rules.host }}
     http:
-      # Для различных путей в URL можно указать различные бэкенд-сервисы
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            # Заранее создан сервис типа ClusterIP
-            # Он выступает в качестве бэкенда нашего Ingress
             name: frontend
             port:
-              # У сервиса может быть несколько портов, указываем нужный нам
               number: 8080

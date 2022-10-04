@@ -1,30 +1,47 @@
 global:
-  environment: prod
+  environment: production
+  revisionHistoryLimit: 15
+  vault_token: bXlyb290Nzc3
+  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaXRsYWIucHJha3Rpa3VtLXNlcnZpY2VzLnJ1OjUwNTAiOiB7CgkJCSJhdXRoIjogIlpYSmhhMmh0WlhSNmVXRnViM1k2TlZrNWNESnlSM05RUVcxSFVIST0iCgkJfQoJfQp9
 
 backend:
   replicaCount: 1
   image:
     repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend
     tag: latest
-    pullPolicy: Always
+    imagePullPolicy: Always
   env:
     - name: VAULT_URL
       value: 51.250.67.183
-  vault:
-    tokenSecretName: vault
 
 backend-report:
+  replicaCount: 1
   image: 
     repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend-report
     tag: latest
+    imagePullPolicy: Always
   env:
     - name: VAULT_URL
       value: 51.250.67.183
-  vault:
-    tokenSecretName: vault
+  request:
+    cpu: 100m
+  limits:
+    cpu: 1
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 5
+    averageUtilization: 75
+
 
 frontend:
+  replicaCount: 1
   fqdn: 06-d-pashkov.k8s.praktikum-services.tech
   image:
     repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-frontend
     tag: latest
+    imagePullPolicy: Always
+  ingress:
+    tls:
+      hosts: "06-d-pashkov.k8s.praktikum-services.tech"
+    rules: 
+      host: "06-d-pashkov.k8s.praktikum-services.tech"
