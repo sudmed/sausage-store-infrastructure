@@ -1,0 +1,23 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: alpine/k8s:1.22.6
+  environment:
+    name: kubernetes
+    url: https://06-d-pashkov.k8s.praktikum-services.tech
+  before_script:
+    - mkdir -p ~/.kube
+    - echo ${kubeconfig} | base64 -d > ~/.kube/config
+    - KUBECONFIG=~/.kube/config
+    - export KUBECONFIG
+  script:
+    - |
+      helm repo add nexus $NEXUS_HELM_REPO --username $NEXUS_REPO_USER --password $NEXUS_REPO_PASS
+      helm repo update
+
+      helm upgrade --install sausage-store \
+      --set global.environment=production \
+      --atomic --timeout 15m \
+      nexus/sausage-store
