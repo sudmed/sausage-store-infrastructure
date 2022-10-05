@@ -6,6 +6,24 @@ global:
 
 backend:
   replicaCount: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 20%
+  containersName: backend
+  containerPort: 8080
+  servicePort: 8080
+  updatePolicy:
+    updateMode: "Recreate"
+  resourcePolicy:
+    containerName: "*"
+    minAllowed:
+      cpu: 0m
+      memory: 0Mi
+    maxAllowed:
+      cpu: 1
+      memory: 500Mi
   image:
     repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend
     tag: latest
@@ -16,6 +34,9 @@ backend:
 
 backend-report:
   replicaCount: 1
+  containersName: backend-report
+  containerPort: 8080
+  servicePort: 8080
   image: 
     repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-backend-report
     tag: latest
@@ -35,6 +56,9 @@ backend-report:
 
 frontend:
   replicaCount: 1
+  containerPort: 8080
+  servicePort: 8080
+  containersName: frontend
   fqdn: 06-d-pashkov.k8s.praktikum-services.tech
   image:
     repository: gitlab.praktikum-services.ru:5050/d.pashkov/sausage-store/sausage-frontend
@@ -45,3 +69,6 @@ frontend:
       hosts: "06-d-pashkov.k8s.praktikum-services.tech"
     rules: 
       host: "06-d-pashkov.k8s.praktikum-services.tech"
+    rootpath:
+      port:
+        number: 8080
