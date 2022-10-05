@@ -36,12 +36,12 @@ spec:
                 values:
                 - frontend
       containers:
-        - name: frontend
+        - name: {{ .Values.containersName }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           ports:
             - name: frontend
-              containerPort: 8080
+              containerPort: {{ .Values.containerPort }}
           volumeMounts:
           - name: nginx-conf
             mountPath: /etc/nginx/conf.d/

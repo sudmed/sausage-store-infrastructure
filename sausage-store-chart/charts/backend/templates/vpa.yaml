@@ -9,15 +9,15 @@ spec:
     kind: Deployment
     name: backend-{{ .Release.Name }}
   updatePolicy:
-    updateMode: "Recreate"
+    updateMode: {{ .Values.updatePolicy.updateMode }}
   resourcePolicy:
     containerPolicies:
-      - containerName: "*"
+      - containerName: "{{ .Values.resourcePolicy.containerName }}"
         minAllowed:
-          cpu: 0m
-          memory: 0Mi
+          cpu: {{ .Values.resourcePolicy.minAllowed.cpu }}
+          memory: {{ .Values.resourcePolicy.minAllowed.memory }}
         maxAllowed:
-          cpu: 1
-          memory: 500Mi
+          cpu: {{ .Values.resourcePolicy.maxAllowed.cpu }}
+          memory: {{ .Values.resourcePolicy.maxAllowed.memory }}
         controlledResources: ["cpu", "memory"]
         controlledValues: RequestsAndLimits

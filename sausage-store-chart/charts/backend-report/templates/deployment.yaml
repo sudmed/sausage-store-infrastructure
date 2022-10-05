@@ -25,7 +25,7 @@ spec:
         app: backend-report
     spec:
       containers:
-        - name: backend-report
+        - name: {{ .Values.containersName }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           env:
@@ -40,7 +40,7 @@ spec:
                   key: vault_token
           ports:
             - name: backend-report
-              containerPort: 8080
+              containerPort: {{ .Values.containerPort }}
           resources:
             requests:
               cpu: {{ .Values.request.cpu }}

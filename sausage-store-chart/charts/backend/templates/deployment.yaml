@@ -17,10 +17,10 @@ spec:
   revisionHistoryLimit: {{ .Values.global.revisionHistoryLimit }}
   replicas: {{ .Values.replicaCount }}
   strategy:
-    type: RollingUpdate
+    type: {{ .Values.strategy.type }}
     rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 20%
+      maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
+      maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
   selector:
     matchLabels:
       app: backend
@@ -30,14 +30,14 @@ spec:
         app: backend
     spec:
       containers:
-        - name: backend
+        - name: {{ .Values.containersName }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           env:
             - name: VAULT_URL
             {{- range .Values.env }}
               value: {{ .value }}
-            {{- end}}
+            {{- end }}
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -45,7 +45,7 @@ spec:
                   key: vault_token
           ports:
             - name: backend
-              containerPort: 8080
+              containerPort: {{ .Values.containerPort }}
           livenessProbe:
             httpGet:
               path: /actuator/health
