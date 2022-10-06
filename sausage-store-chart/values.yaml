@@ -55,7 +55,6 @@ backend-report:
     maxReplicas: 5
     averageUtilization: 75
 
-
 frontend:
   replicaCount: 1
   containerPort: 8080
