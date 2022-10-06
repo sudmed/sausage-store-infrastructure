@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: latest
+description: Sausage Store backend report Helm Chart
+name: backend-report
+type: application
+version: 0.1.0
