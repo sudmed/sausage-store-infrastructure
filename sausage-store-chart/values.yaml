@@ -3,6 +3,8 @@ global:
   revisionHistoryLimit: 15
   vault_token: bXlyb290Nzc3
   dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaXRsYWIucHJha3Rpa3VtLXNlcnZpY2VzLnJ1OjUwNTAiOiB7CgkJCSJhdXRoIjogIlpYSmhhMmh0WlhSNmVXRnViM1k2TlZrNWNESnlSM05RUVcxSFVIST0iCgkJfQoJfQp9
+  proxy_pass_Name: backend
+  proxy_pass_Port: 8080
 
 backend:
   replicaCount: 1
