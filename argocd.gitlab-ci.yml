@@ -6,4 +6,6 @@ deploy:
   image: argoproj/argocd:v2.3.3
   script:
     - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-dmitriy-pashkov -p backend.image.tag=latest
+    - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-dmitriy-pashkov -p frontend.image.tag=latest
+    - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-dmitriy-pashkov -p backend-report.image.tag=latest
     - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync sausage-store-dmitriy-pashkov
