@@ -5,7 +5,7 @@ helm:
   stage: module-pipelines
   trigger:
     include:
-      - "helm-chart.gitlab-ci.yml"
+      - "argocd.gitlab-ci.yml"
     strategy: depend
   only:
     changes:
