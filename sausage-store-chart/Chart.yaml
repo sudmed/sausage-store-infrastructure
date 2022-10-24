@@ -13,4 +13,4 @@ dependencies:
 description: Sausage Store Helm Chart
 name: sausage-store
 type: application
-version: 0.1.3
+version: 0.1.5
