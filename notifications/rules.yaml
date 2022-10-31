@@ -1,36 +1,44 @@
 apiVersion: v1
 data:
-  alertmanager.yml: |
-    global:
-      resolve_timeout: 1m
-      slack_api_url: 'https://hooks.slack.com/services/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'
-    route:
-       group_wait: 10s
-       group_interval: 30s
-       repeat_interval: 30m
-       receiver: "slack"
-       routes:
-         - receiver: "slack"
-           group_wait: 10s
-           match_re:
-             severity: critical|warning
-           continue: true
-    receivers:
-     - name: "slack"
-       slack_configs:
-         - send_resolved: true
-           channel: '#dvs_06_notifications'
-           text: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ .Annotations.description }}\n{{ end }}"
+  sausage-store.yaml: |
+    ---
+    groups:
+      - name: Sausage store rules
+        rules:
+        - alert: InstanceDown
+          expr: up{app="backend"} == 0
+          for: 1m
+          labels:
+            severity: critical
+            project: "sausage_store"
+            component: "Backend"
+        - alert: ActuatorError
+          expr: http_server_requests_seconds_count{uri="/actuator/prometheus", status=~"4.."}
+          for: 2m
+          labels:
+            severity: moderate
+            project: "sausage_store"
+        - alert: Latency
+          expr: quantile(0.95,http_server_requests_seconds_max{uri="/api/orders", method="POST"}) >=0.1
+          for: 5m
+          labels:
+            severity: moderate
+            project: "sausage_store"
+        - alert: RequestError500
+          expr: sum(http_server_requests_seconds_count{status="500"})
+          labels:
+            severity: critical
+            project: "sausage_store"
 kind: ConfigMap
 metadata:
   annotations:
-    meta.helm.sh/release-name: alertmanager
+    meta.helm.sh/release-name: prometheus
     meta.helm.sh/release-namespace: 06-d-pashkov
-  creationTimestamp: "2022-10-25T08:07:09Z"
+  creationTimestamp: "2022-10-15T13:21:15Z"
   labels:
-    app: alertmanager
+    app: prometheus
     app.kubernetes.io/managed-by: Helm
-  name: alertmanager
+  name: prometheus-rules
   namespace: 06-d-pashkov
-  resourceVersion: "296562495"
-  uid: 3c708a95-5743-4fb5-9c10-045bbe2fff73
+  resourceVersion: "314191709"
+  uid: 4f9a126e-7da9-48b5-9c05-24879c06185f
