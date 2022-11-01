@@ -1,0 +1,44 @@
+apiVersion: v1
+data:
+  sausage-store.yaml: |
+    ---
+    groups:
+      - name: Sausage store rules
+        rules:
+        - alert: InstanceDown
+          expr: up{app="backend"} == 0
+          for: 1m
+          labels:
+            severity: critical
+            project: "sausage_store"
+            component: "Backend"
+        - alert: ActuatorError
+          expr: http_server_requests_seconds_count{uri="/actuator/prometheus", status=~"4.."}
+          for: 2m
+          labels:
+            severity: moderate
+            project: "sausage_store"
+        - alert: Latency
+          expr: quantile(0.95,http_server_requests_seconds_max{uri="/api/orders", method="POST"}) >=0.1
+          for: 5m
+          labels:
+            severity: moderate
+            project: "sausage_store"
+        - alert: RequestError500
+          expr: sum(http_server_requests_seconds_count{status="500"})
+          labels:
+            severity: critical
+            project: "sausage_store"
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: 06-d-pashkov
+  creationTimestamp: "2022-10-15T13:21:15Z"
+  labels:
+    app: prometheus
+    app.kubernetes.io/managed-by: Helm
+  name: prometheus-rules
+  namespace: 06-d-pashkov
+  resourceVersion: "314191709"
+  uid: 4f9a126e-7da9-48b5-9c05-24879c06185f
