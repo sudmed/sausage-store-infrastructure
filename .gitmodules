@@ -1,0 +1,3 @@
+[submodule "sausage-store"]
+	path = sausage-store
+	url = https://gitlab.praktikum-services.ru/d.pashkov/sausage-store
